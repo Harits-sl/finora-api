@@ -2,6 +2,20 @@ import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
 
+const withRoles = {
+  userRoles: {
+    include: {
+      role: {
+        include: {
+          rolePermissions: {
+            include: { permission: true },
+          },
+        },
+      },
+    },
+  },
+} satisfies Prisma.UserInclude;
+
 @Injectable()
 export class UsersRepository {
   constructor(private readonly prisma: PrismaService) {}
@@ -24,6 +38,13 @@ export class UsersRepository {
     return this.prisma.user.findUnique({ where: { id } });
   }
 
+  async findByIdWithRoles(id: string) {
+    return this.prisma.user.findUnique({
+      where: { id },
+      include: withRoles,
+    });
+  }
+
   async findByEmail(email: string) {
     return this.prisma.user.findUnique({ where: { email } });
   }
@@ -38,5 +59,19 @@ export class UsersRepository {
 
   async delete(id: string) {
     return this.prisma.user.delete({ where: { id } });
+  }
+
+  async assignRole(userId: string, roleId: string) {
+    return this.prisma.userRole.upsert({
+      where: { userId_roleId: { userId, roleId } },
+      update: {},
+      create: { userId, roleId },
+    });
+  }
+
+  async revokeRole(userId: string, roleId: string) {
+    return this.prisma.userRole.delete({
+      where: { userId_roleId: { userId, roleId } },
+    });
   }
 }
