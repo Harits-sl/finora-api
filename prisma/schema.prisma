@@ -14,8 +14,8 @@ model User {
   password     String
   userRoles    UserRole[]
   transactions Transaction[]
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
 
   @@map("users")
 }
@@ -26,8 +26,8 @@ model Role {
   description     String?
   userRoles       UserRole[]
   rolePermissions RolePermission[]
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
 
   @@map("roles")
 }
@@ -37,29 +37,29 @@ model Permission {
   name            String           @unique
   description     String?
   rolePermissions RolePermission[]
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
 
   @@map("permissions")
 }
 
 model UserRole {
-  userId     String
-  roleId     String
+  userId     String   @map("user_id")
+  roleId     String   @map("role_id")
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   role       Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
-  assignedAt DateTime @default(now())
+  assignedAt DateTime @default(now()) @map("assigned_at")
 
   @@id([userId, roleId])
   @@map("user_roles")
 }
 
 model RolePermission {
-  roleId       String
-  permissionId String
+  roleId       String     @map("role_id")
+  permissionId String     @map("permission_id")
   role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
   permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
-  assignedAt   DateTime   @default(now())
+  assignedAt   DateTime   @default(now()) @map("assigned_at")
 
   @@id([roleId, permissionId])
   @@map("role_permissions")
@@ -67,15 +67,15 @@ model RolePermission {
 
 model Transaction {
   id          String              @id @default(cuid())
-  userId      String
+  userId      String              @map("user_id")
   user        User                @relation(fields: [userId], references: [id], onDelete: Cascade)
   type        TransactionType
   category    TransactionCategory
   amount      Decimal             @db.Decimal(10, 2)
   description String?
   date        DateTime
-  createdAt   DateTime            @default(now())
-  updatedAt   DateTime            @updatedAt
+  createdAt   DateTime            @default(now()) @map("created_at")
+  updatedAt   DateTime            @updatedAt @map("updated_at")
 
   @@map("transactions")
 }
