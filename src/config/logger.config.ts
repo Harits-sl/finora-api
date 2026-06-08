@@ -8,7 +8,7 @@ const devFormat = combine(
   timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
   errors({ stack: true }),
   printf(({ level, message, timestamp: ts, stack }) => {
-    return `${ts} [${level}]: ${stack || message}`;
+    return `${String(ts)} [${level}]: ${String(stack || message)}`;
   }),
 );
 

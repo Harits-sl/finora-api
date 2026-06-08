@@ -53,7 +53,10 @@ export class RolesController {
   @Post(':id/permissions')
   @HttpCode(HttpStatus.OK)
   @Permissions('roles:update')
-  assignPermissions(@Param('id') id: string, @Body() dto: AssignPermissionsDto) {
+  assignPermissions(
+    @Param('id') id: string,
+    @Body() dto: AssignPermissionsDto,
+  ) {
     return this.rolesService.assignPermissions(id, dto);
   }
 

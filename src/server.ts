@@ -1,7 +1,7 @@
 import { ValidationPipe, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
-import * as compression from 'compression';
+import compression from 'compression';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
 import { API_PREFIX } from './common/constants';
@@ -11,7 +11,7 @@ export async function bootstrap(): Promise<void> {
   const configService = app.get(ConfigService);
   const logger = new Logger('Bootstrap');
 
-  const port = configService.get<number>('app.port', 3000);
+  const port = configService.get<number>('app.port', 3001);
   const env = configService.get<string>('app.env', 'development');
   const frontendUrl = configService.get<string>('app.frontendUrl', '*');
   const appName = configService.get<string>('app.name', 'API');

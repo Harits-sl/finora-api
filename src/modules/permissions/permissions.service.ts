@@ -21,7 +21,8 @@ export class PermissionsService {
 
   async create(dto: CreatePermissionDto) {
     const existing = await this.repo.findByName(dto.name);
-    if (existing) throw new ConflictException(`Permission '${dto.name}' already exists`);
+    if (existing)
+      throw new ConflictException(`Permission '${dto.name}' already exists`);
     const permission = await this.repo.create(dto);
     return successResponse(permission, 'Permission created');
   }

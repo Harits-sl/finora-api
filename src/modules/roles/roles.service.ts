@@ -1,4 +1,8 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { ResourceNotFoundException } from '../../common/exceptions/app.exception';
 import { successResponse } from '../../common/utils/response.util';
 import { PermissionsRepository } from '../permissions/permissions.repository';
@@ -29,7 +33,8 @@ export class RolesService {
 
   async create(dto: CreateRoleDto) {
     const existing = await this.repo.findByName(dto.name);
-    if (existing) throw new ConflictException(`Role '${dto.name}' already exists`);
+    if (existing)
+      throw new ConflictException(`Role '${dto.name}' already exists`);
     const role = await this.repo.create(dto);
     return successResponse(role, 'Role created');
   }

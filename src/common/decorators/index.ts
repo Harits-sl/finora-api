@@ -1,4 +1,8 @@
-import { createParamDecorator, ExecutionContext, SetMetadata } from '@nestjs/common';
+import {
+  createParamDecorator,
+  ExecutionContext,
+  SetMetadata,
+} from '@nestjs/common';
 import { Request } from 'express';
 import { AuthenticatedUser } from '../types/auth.type';
 
